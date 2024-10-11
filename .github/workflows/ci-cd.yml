@@ -1,0 +1,34 @@
+name: ci-cd Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test_file: [test1.sh, test2.sh, test3.sh]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up
+        run: echo "set up enviroment"
+
+      - name: Build
+        run: echo "build application"
+
+      
+      - name: Grant execute permissions for test files
+        run: chmod +x ./tests/*.sh
+
+      - name: Run tests in parallel
+        run: ./tests/${{ matrix.test_file }}
